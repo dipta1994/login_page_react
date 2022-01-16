@@ -1,40 +1,48 @@
 import React, { Component } from 'react'
-import { Router } from 'react-router-dom'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
-            username: '',
-            password: ''
-        }
-        this.handleinputForUserName = this.handleinputForUserName.bind(this);
-        this.handleinputForPassword = this.handleinputForPassword.bind(this);
+            userName: '',
+            passWord: '',
+            isAuthnticated: false
+        };
+
+        this.handleUserNameChange = this.handleUserNameChange.bind(this);
+        this.handlePasswordChange = this.handlePasswordChange.bind(this);
+
+        this.handleSubmit = this.handleSubmit.bind(this);
 
     }
-    handleinputForUserName = (event) => {
-        this.setState({ username: event.target.value });
-        console.log(this.state)
+    handleUserNameChange(event) {
+        this.setState({ userName: event.target.value });
     }
-    handleinputForPassword = (event) => {
-        this.setState({ password: event.target.value });
-        console.log(this.state)
+    handlePasswordChange(event) {
+        this.setState({ passWord: event.target.value });
+    }
+    handleSubmit = () => {
+        if (this.state.passWord === 'a' && this.state.userName === 'a') {
+            <Navigate to={'/Page1'} />
+        }
+        <Navigate to={'/Page2'} />
+
     }
     render() {
         return (
-            <form>
+            <form onSubmit={this.handleSubmit}>
                 <h1 className="text-center text-blink display-4">Welcome To Bisotech</h1>
                 <div>
                     <h3 className="text-center text-info-black">Log In</h3>
                     <div>
                         <label>Enter Username: </label>
-                        <input type="text" name='username' value={this.state.username} onChange={this.handleinputForUserName} />
+                        <input type="text" value={this.state.event} onChange={this.handleUserNameChange} />
                     </div>
                     <div>
                         <label>Enter Password: </label>
-                        <input type="text" name='password' value={this.state.password} onChange={this.handleinputForPassword} />
+                        <input type="text" value={this.state.event} onChange={this.handlePasswordChange} />
                     </div>
                     <div className="checkbox">
                         <label>
@@ -42,12 +50,17 @@ class Login extends Component {
                         </label>
                     </div>
                     <div>
-                        <Link to="/Page1" className="btn btn-primary">Login</Link>
-
+                        {this.state.userName === 'admin' && this.state.passWord === 'admin' ?
+                            (<Link to={'/Page1'}>
+                                <button type='submit' className="btn btn-primary">Login</button>
+                            </Link>)
+                            : (<Link to={'/Page2'}><button type='submit' className="btn btn-primary">Login</button>
+                            </Link>)}
                     </div>
-                </div>
 
-            </form>
+                </div>
+            </form >
+
         )
     }
 }

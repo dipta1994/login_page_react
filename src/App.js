@@ -10,8 +10,8 @@ const App = () => {
     <div className="App">
       <Routes>
         <Route exact path="/" element={<Login />} />;
-        <Route path="/Page1" element={<Page1 />} />;
-        <Route path="/Page2" element={<Page2 />} />;
+        <Route exact path="/Page1" element={<Page1 />} />;
+        <Route exact path="/Page2" element={<Page2 />} />;
       </Routes>
     </div>
   )
