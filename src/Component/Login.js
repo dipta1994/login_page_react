@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, Navigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
@@ -14,7 +14,6 @@ class Login extends Component {
         this.handleUserNameChange = this.handleUserNameChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
 
     }
     handleUserNameChange(event) {
@@ -23,16 +22,10 @@ class Login extends Component {
     handlePasswordChange(event) {
         this.setState({ passWord: event.target.value });
     }
-    handleSubmit = () => {
-        if (this.state.passWord === 'a' && this.state.userName === 'a') {
-            <Navigate to={'/Page1'} />
-        }
-        <Navigate to={'/Page2'} />
 
-    }
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
+            <form >
                 <h1 className="text-center text-blink display-4">Welcome To Bisotech</h1>
                 <div>
                     <h3 className="text-center text-info-black">Log In</h3>
@@ -51,7 +44,7 @@ class Login extends Component {
                     </div>
                     <div>
                         {this.state.userName === 'admin' && this.state.passWord === 'admin' ?
-                            (<Link to={'/Page1'}>
+                            (<Link to={'/Dashboard'}>
                                 <button type='submit' className="btn btn-primary">Login</button>
                             </Link>)
                             : (<Link to={'/Page2'}><button type='submit' className="btn btn-primary">Login</button>
