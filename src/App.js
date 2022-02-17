@@ -4,7 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Login from './Component/Login';
 import Dashboard from './Component/Dashboard';
 import Page2 from './Component/Page2';
-import Table from './Component/FetchUsers';
+import CustomizedTables from './Component/FetchUsers';
 
 const App = () => {
   return (
@@ -12,7 +12,8 @@ const App = () => {
       <Routes>
         <Route exact path="/" element={<Login />} />;
         <Route exact path="/Dashboard" element={<Dashboard />} />;
-        <Route exact path="/FetchUsers" element={<Table />} />;
+        <Route exact path="/FetchUsers" element={<CustomizedTables />} />;
+        <Route exact path="/FetchUsers/:id" element={<CustomizedTables />} />
         <Route exact path="/Page2" element={<Page2 />} />;
       </Routes>
     </div>

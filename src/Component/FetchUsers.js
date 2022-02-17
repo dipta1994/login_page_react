@@ -7,6 +7,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import TablePagination from '@mui/material/TablePagination';
+import { useParams } from "react-router-dom";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -30,35 +32,74 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 function CustomizedTables() {
     const [data, setData] = useState([]);
+    const [column, setColumn] = useState([]);
+
+    let { id } = useParams();
     useEffect(() => {
-        fetch("https://api.spacexdata.com/v3/rockets")
-            .then((res) => res.json())
-            .then((data) => setData(data));
-    }, [data]);
+        // declare the async data fetching function
+        async function fetchData() {
+            // get the data from the api
+            const Response = await fetch(`http://localhost:8888/airlines/${id}`);
+            // convert the data to json
+            const data = await Response.json();
+            console.log(data, 'm')
+            setColumn(Object.keys(data[0]).splice(0, 4));
+
+            // set state with the result
+            setData(data);
+        }
+
+        // call the function
+        fetchData()
+            // make sure to catch any error
+            .catch(console.error);;
+    }, [id])
+    console.log(data)
+    console.log(column)
+    const [page, setPage] = React.useState(2);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleChangePage = (newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
 
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
                 <TableHead>
+
                     <TableRow>
-                        <StyledTableCell align="center">Rocket_Name&nbsp;</StyledTableCell>
-                        <StyledTableCell align="center">cost_per_launch&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="center">success_rate_pct&nbsp;(g)</StyledTableCell>
-                        <StyledTableCell align="center">first_flight&nbsp;(g)</StyledTableCell>
+                        {column.map((eachColumn) =>
+                            <StyledTableCell align="center">{eachColumn}&nbsp;</StyledTableCell>
+                        )}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {data.map((data) => (
-                        <StyledTableRow key={data.name}>
-                            <StyledTableCell align="center">{data.rocket_id}</StyledTableCell>
-                            <StyledTableCell align="center">{data.cost_per_launch}</StyledTableCell>
-                            <StyledTableCell align="center">{data.success_rate_pct}</StyledTableCell>
-                            <StyledTableCell align="center">{data.first_flight}</StyledTableCell>
+                        <StyledTableRow key={data.id}>
+                            <StyledTableCell align="center">{data.category}</StyledTableCell>
+                            <StyledTableCell align="center">{data.subcategory}</StyledTableCell>
+                            <StyledTableCell align="center">{data.type}</StyledTableCell>
+                            <StyledTableCell align="center">{data.totalReceived}</StyledTableCell>
                         </StyledTableRow>
                     ))}
                 </TableBody>
             </Table>
+            <TablePagination
+                component="div"
+                count={100}
+                page={page}
+                onPageChange={handleChangePage}
+                rowsPerPage={rowsPerPage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+            />
         </TableContainer>
+
     );
 }
 
